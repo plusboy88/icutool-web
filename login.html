@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="./css/login.css">
+    <script src="./js/public.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>欢迎登录</h1>
+        <form id="loginForm">
+            <div class="form-group" id="usernameForm">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" placeholder="请输入用户名">
+            </div>
+            <div class="form-group" id="passwordForm">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" placeholder="请输入密码">
+            </div>
+            <div class="form-group hidden" id="phoneForm">
+                <label for="phoneNumber">手机号</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="请输入手机号">
+            </div>
+            <div class="form-group hidden" id="verificationCodeForm">
+                <label for="verificationCode">验证码</label>
+                <div id="mobileCode">
+                    <input type="number" id="verificationCode" name="verificationCode" placeholder="请输入验证码">
+                    <button type="button" id="sendCodeButton" onclick="sendVerificationCode()">发送</button>
+                </div>
+            </div>
+            <button type="button" onclick="login()">登录</button>
+            <div class="jump-login">
+                <button type="button" onclick="switchType()">切换至手机号登录</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function switchType() {
+            var switchButton = document.querySelector('.jump-login button');
+            var phoneForm = document.getElementById('phoneForm')
+            if (phoneForm.classList.contains('hidden')) {
+                document.getElementById('usernameForm').classList.add('hidden');
+                document.getElementById('passwordForm').classList.add('hidden');
+                document.getElementById('phoneForm').classList.remove('hidden');
+                document.getElementById('verificationCodeForm').classList.remove('hidden');
+                switchButton.textContent = '切换至用户名密码登录';
+            } else {
+                document.getElementById('usernameForm').classList.remove('hidden');
+                document.getElementById('passwordForm').classList.remove('hidden');
+                document.getElementById('phoneForm').classList.add('hidden');
+                document.getElementById('verificationCodeForm').classList.add('hidden');
+                console.log(switchButton.textContent)
+                switchButton.textContent = '切换至手机号登录';
+            }
+
+        }
+        function login() {
+            var formData;
+            var url;
+
+            if (!usernameForm.classList.contains('hidden')) {
+                formData = {
+                    username: document.getElementById('username').value,
+                    password: document.getElementById('password').value
+                };
+                url = backendUrlPrefix + '/user/login'; // Replace with the actual login URL
+            } else if (!phoneForm.classList.contains('hidden')) {
+                formData = {
+                    mobile: document.getElementById('phoneNumber').value,
+                    smsCode: document.getElementById('verificationCode').value
+                };
+                url = backendUrlPrefix + '/user/smslogin'; // Replace with the actual SMS login URL
+            }
+
+            sendPostRequest(url, formData, handleLoginResponse);
+        }
+
+        function sendPostRequest(url, data, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    callback(response);
+                } else {
+                    console.error('请求失败');
+                }
+            };
+
+            var requestData = JSON.stringify(data);
+            xhr.send(requestData);
+        }
+
+        function handleLoginResponse(response) {
+            if (response.code === 200) {
+                var token = response.data.token;
+                localStorage.setItem('token', token);
+                console.log('登录成功');
+                // 可以在这里进行页面跳转或其他操作
+            } else {
+                console.error('登录失败');
+            }
+        }
+
+        function sendVerificationCode() {
+            var button = document.getElementById('sendCodeButton');
+            button.disabled = true;
+            var mobile = document.getElementById('phoneNumber').value;
+            var url = backendUrlPrefix + '/smscode?mobile=' + mobile;
+            sendGetRequest(url, handleVerificationCodeResponse);
+        }
+
+        function sendGetRequest(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    callback(response);
+                } else {
+                    console.error('请求失败');
+                }
+            };
+
+            xhr.send();
+        }
+
+        function handleVerificationCodeResponse(response) {
+            if (response.code === 200) {
+                console.log('验证码发送成功');
+                // 可以在这里进行其他处理，例如更新页面状态
+                var button = document.getElementById('sendCodeButton');
+                startCountdown(60, button);
+            } else {
+                console.error('验证码发送失败');
+                // 可以在这里进行其他处理，例如显示错误消息
+            }
+        }
+
+        function startCountdown(seconds, button) {
+            var count = seconds;
+            button.textContent = count + ' 秒';
+
+            var countdownInterval = setInterval(function () {
+                count--;
+                button.textContent = count + ' 秒';
+
+                if (count <= 0) {
+                    // Countdown complete, enable the button
+                    button.textContent = '发送';
+                    button.disabled = false;
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+        }
+
+    </script>
+</body>
+
+</html>

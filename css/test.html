@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>登录</title>
+    <style>
+        body {
+            background-image: url('/static/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 3px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .jump-login {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #verificationCodeForm {
+            display: flex;
+        }
+
+        #verificationCodeForm input {
+            width: calc(50% - 5px);
+        }
+
+        #verificationCodeForm button {
+            width: calc(50% - 5px);
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>欢迎登录</h1>
+        <form id="loginForm">
+            <div class="form-group" id="usernameForm">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" placeholder="请输入用户名">
+            </div>
+            <div class="form-group" id="passwordForm">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" placeholder="请输入密码">
+            </div>
+            <div class="form-group hidden" id="phoneForm">
+                <label for="phoneNumber">手机号</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="请输入手机号">
+            </div>
+            <div class="form-group hidden" id="verificationCodeForm">
+                <label for="verificationCode">验证码</label>
+                <input type="number" id="verificationCode" name="verificationCode" placeholder="请输入验证码">
+                <button type="button" onclick="sendVerificationCode()">发送验证码</button>
+            </div>
+            <button type="button" onclick="login()">登录</button>
+            <div class="jump-login">
+                <button type="button" onclick="switchToPhoneNumber()">切换至手机号登录</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function switchToPhoneNumber() {
+            document.getElementById('usernameForm').classList.add('hidden');
+            document.getElementById('passwordForm').classList.add('hidden');
+            document.getElementById('phoneForm').classList.remove('hidden');
+            document.getElementById('verificationCodeForm').classList.remove('hidden');
+        }
+
+        function login() {
+            // 执行登录逻辑
+            console.log('执行登录逻辑');
+        }
+
+        function sendVerificationCode() {
+            // 执行发送验证码逻辑
+            console.log('执行发送验证码逻辑');
+        }
+    </script>
+</body>
+
+</html>

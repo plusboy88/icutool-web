@@ -1,0 +1,84 @@
+body {
+    background-image: url('/static/bg.jpg');
+    /* 替换为实际的背景图路径 */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    /* 保证背景占满整个视口高度 */
+    margin: 0;
+    /* 去除body的默认边距 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+}
+
+h1 {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="tel"],
+input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.jump-login {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+#mobileCode {
+    justify-content: space-between;
+    display: flex;
+}
+
+#mobileCode input {
+    width: calc(70% - 5px);
+}
+
+#mobileCode button {
+    width: calc(20% - 5px);
+    /* width: calc(25%); */
+    margin-left: 5px;
+}
